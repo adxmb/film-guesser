@@ -10,7 +10,7 @@ public abstract class Service {
   private static final String BASE_URL = "http://www.omdbapi.com/";
 
   protected Url getBaseUrl() {
-    Url url = new Url(BASE_URL).addParam("apikey", "API_KEY"); // TODO: Replace with API key
+    Url url = new Url(BASE_URL).addParam("apikey", System.getProperty("API_KEY"));
     return url;
   }
 

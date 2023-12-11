@@ -6,6 +6,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 
+import javafx.scene.image.Image;
+
 public class GetFilmDetailsService extends Service {
 
   private HttpRequest request;
