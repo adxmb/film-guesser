@@ -1,0 +1,3 @@
+GET http://www.omdbapi.com/?i=tt3896198&apikey=<APIKEY>
+Content-Type: application/json
+# Replace <APIKEY> with API key from: https://www.omdbapi.com/apikey.aspx
