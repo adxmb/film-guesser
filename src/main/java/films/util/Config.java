@@ -2,24 +2,33 @@ package films.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Properties;
 
 public class Config {
 
-  private static final String CONFIG_LOCATION = ".env";
+  private static final Path CONFIG_LOCATION = Paths.get(".env").toAbsolutePath();
 
   public static void read() {
-    System.out.println("Loading config file at " + CONFIG_LOCATION);
-    InputStream inputStream = tryGetFile(CONFIG_LOCATION);
-    tryLoadProperties(inputStream);
-    tryCloseFile(inputStream);
+    try {
+      Console.log("Attempting to load config file at '" + CONFIG_LOCATION + "'...");
+      InputStream inputStream = tryGetFile(CONFIG_LOCATION);
+      tryLoadProperties(inputStream);
+      tryCloseFile(inputStream);
+      Console.success("Successfully loaded config file at '" + CONFIG_LOCATION + "'!");
+    } catch (RuntimeException e) {
+      Console.error(e.getMessage());
+      System.exit(0);
+    }
   }
 
-  private static InputStream tryGetFile(String location) {
+  private static InputStream tryGetFile(Path location) {
     try {
-      return Config.class.getResource(location).openStream();
+      return Files.newInputStream(location);
     } catch (IOException e) {
-      throw new RuntimeException("Failed to find config file at " + location);
+      throw new RuntimeException("Failed to find config file at '" + location + "'", e);
     }
   }
 
@@ -29,7 +38,7 @@ public class Config {
       properties.load(inputStream);
       System.getProperties().putAll(properties); // Add .env properties to environmental variables
     } catch (IOException e) {
-      throw new RuntimeException("Failed to read config file at " + CONFIG_LOCATION, e);
+      throw new RuntimeException("Failed to read config file at '" + CONFIG_LOCATION + "'", e);
     }
   }
 
@@ -37,7 +46,7 @@ public class Config {
     try {
       inputStream.close();
     } catch (IOException e) {
-      throw new RuntimeException("Failed to close config file at " + CONFIG_LOCATION, e);
+      throw new RuntimeException("Failed to close config file at '" + CONFIG_LOCATION + "'", e);
     }
   }
 }
