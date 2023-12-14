@@ -1,0 +1,2 @@
+GET https://letterboxd.com/film/the-avengers-2012/
+# Use REST Client extension to test
