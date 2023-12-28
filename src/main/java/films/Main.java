@@ -1,5 +1,6 @@
 package films;
 
+import films.objects.json.FilmInfo;
 import films.services.GetFilmDetailsService;
 import films.ui.UserInterface;
 import films.ui.cli.CommandLineInterface;
@@ -14,6 +15,19 @@ public class Main {
 
     // The Shawshank Redemption
     String json = new GetFilmDetailsService("tt0111161").send();
-    System.out.println(json);
+    FilmInfo film = new FilmInfo(json);
+    System.out.println(
+        "\n"
+            + film.getTitle()
+            + " ("
+            + film.getYear()
+            + ")"
+            + ", directed by "
+            + film.getDirectors()
+            + ", written by "
+            + film.getWriters()
+            + ", starring "
+            + film.getCast()
+            + ".\n");
   }
 }
