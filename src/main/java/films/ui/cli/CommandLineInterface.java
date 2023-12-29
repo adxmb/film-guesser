@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 public class CommandLineInterface implements UserInterface {
   private static final int MAX_TURNS = 6;
+  private static final String REGEX = "(\\s|-|'|\\.|!)";
 
   private FilmInfo film;
   private int turn;
@@ -23,6 +24,7 @@ public class CommandLineInterface implements UserInterface {
     this.film = new FilmInfo(json);
     this.turn = 1;
     this.scanner = new Scanner(System.in);
+    Console.info("Title match: " + film.getTitle().toLowerCase().replaceAll(REGEX, ""));
   }
 
   /**
@@ -34,7 +36,7 @@ public class CommandLineInterface implements UserInterface {
   public void start() {
     while (turn <= MAX_TURNS) {
       printDetails();
-      if (readGuess(film.getTitle())) {
+      if (readGuess()) {
         Console.success("Correct!");
         scanner.close();
         return;
@@ -53,10 +55,10 @@ public class CommandLineInterface implements UserInterface {
    *
    * @return true if the user's guess is correct, false otherwise
    */
-  public boolean readGuess(String title) {
-    String guess = scanner.nextLine().trim().replaceAll(" ", "").replaceAll("-", "");
-    title = title.toLowerCase().replaceAll(" ", "").replaceAll("-", "");
-    return guess.toLowerCase().equals(title);
+  public boolean readGuess() {
+    String guess = scanner.nextLine().trim().toLowerCase().replaceAll(REGEX, "");
+    String title = film.getTitle().toLowerCase().replaceAll(REGEX, "");
+    return guess.equals(title);
   }
 
   /**
