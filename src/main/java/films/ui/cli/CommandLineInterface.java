@@ -9,6 +9,7 @@ public class CommandLineInterface implements UserInterface {
 
   public FilmInfo film;
   public int turn;
+  private Scanner scanner;
 
   /**
    * Creates a CommandLineInterface object from a JSON string. Creates a FilmInfo object from the
@@ -19,29 +20,30 @@ public class CommandLineInterface implements UserInterface {
   public CommandLineInterface(String json) {
     this.film = new FilmInfo(json);
     this.turn = 1;
+    this.scanner = new Scanner(System.in);
   }
 
-  // TODO: Make this (and readGuess() method) work repeatedly until the user gets it right or they
-  // run out of turns
+  /**
+   * Starts the game. Prints the details of the movie and asks for the user's guess. If the user's
+   * guess is correct, the game ends. If the user's guess is incorrect, the game continues until the
+   * user has guessed the movie or the maximum number of turns has been reached.
+   */
   @Override
   public void start() {
-    printDetails();
-    if (readGuess(film.getTitle())) {
-      System.out.println("Correct!");
-    } else {
-      System.out.println("Incorrect!");
+    while (turn <= MAX_TURNS) {
+      printDetails();
+      if (readGuess(film.getTitle())) {
+        System.out.println("Correct!");
+        scanner.close();
+        return;
+      } else {
+        System.out.println("Incorrect!");
+        turn++;
+      }
     }
-
-    // while (turn <= MAX_TURNS) {
-    //   printDetails();
-    //   if (readGuess(film.getTitle())) {
-    //     System.out.println("Correct!");
-    //     return;
-    //   } else {
-    //     System.out.println("Incorrect!");
-    //     turn++;
-    //   }
-    // }
+    // Only executed if the user has not guessed the movie after the maximum number of turns
+    System.out.println("You lose!");
+    scanner.close();
   }
 
   /**
@@ -50,10 +52,8 @@ public class CommandLineInterface implements UserInterface {
    * @return true if the user's guess is correct, false otherwise
    */
   public boolean readGuess(String title) {
-    Scanner scanner = new Scanner(System.in);
     String guess = scanner.nextLine().trim().replaceAll(" ", "").replaceAll("-", "");
     title = title.toLowerCase().replaceAll(" ", "").replaceAll("-", "");
-    scanner.close();
     return guess.toLowerCase().equals(title);
   }
 
