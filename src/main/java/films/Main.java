@@ -1,5 +1,6 @@
 package films;
 
+import films.objects.IdGenerator;
 import films.objects.json.FilmInfo;
 import films.services.GetFilmDetailsService;
 import films.ui.UserInterface;
@@ -14,7 +15,7 @@ public class Main {
     ui.start();
 
     // The Shawshank Redemption
-    String json = new GetFilmDetailsService("tt0111161").send();
+    String json = new GetFilmDetailsService(IdGenerator.getRandomId()).send();
     FilmInfo film = new FilmInfo(json);
     System.out.println(
         "\n"
