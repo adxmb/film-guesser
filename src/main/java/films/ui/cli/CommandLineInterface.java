@@ -5,7 +5,7 @@ import films.ui.UserInterface;
 import java.util.Scanner;
 
 public class CommandLineInterface implements UserInterface {
-  private static final int MAX_TURNS = 8;
+  private static final int MAX_TURNS = 6;
 
   public FilmInfo film;
   public int turn;
@@ -57,7 +57,6 @@ public class CommandLineInterface implements UserInterface {
     return guess.toLowerCase().equals(title);
   }
 
-  // TODO: Print details based on the turn only
   /**
    * Prints the information the player needs to know for the turn. Asks for the movie's name after
    * printing details.
@@ -65,12 +64,12 @@ public class CommandLineInterface implements UserInterface {
   public void printDetails() {
     System.out.println("\nTurn " + turn + ":");
     System.out.println("Release year: " + film.getYear());
-    System.out.println("Rating: " + film.getRated());
-    System.out.println("Runtime: " + film.getRuntime());
-    System.out.println("Genre(s): " + film.getGenre());
-    System.out.println("Director(s): " + film.getDirectors());
-    System.out.println("Writer(s): " + film.getWriters());
-    System.out.println("Cast: " + film.getCast());
+    // Please lmk if there's a better way to do this
+    if (turn > 1) System.out.println("Rating: " + film.getRated());
+    if (turn > 2) System.out.println("Runtime: " + film.getRuntime());
+    if (turn > 3) System.out.println("Genre(s): " + film.getGenre());
+    if (turn > 4) System.out.println("Director(s): " + film.getDirectors());
+    if (turn > 5) System.out.println("Cast: " + film.getCast());
     System.out.println("\nName the movie: ");
   }
 }
