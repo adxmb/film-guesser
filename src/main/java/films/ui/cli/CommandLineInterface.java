@@ -2,13 +2,15 @@ package films.ui.cli;
 
 import films.objects.json.FilmInfo;
 import films.ui.UserInterface;
+import films.util.Console;
+
 import java.util.Scanner;
 
 public class CommandLineInterface implements UserInterface {
   private static final int MAX_TURNS = 6;
 
-  public FilmInfo film;
-  public int turn;
+  private FilmInfo film;
+  private int turn;
   private Scanner scanner;
 
   /**
@@ -33,16 +35,16 @@ public class CommandLineInterface implements UserInterface {
     while (turn <= MAX_TURNS) {
       printDetails();
       if (readGuess(film.getTitle())) {
-        System.out.println("Correct!");
+        Console.success("Correct!");
         scanner.close();
         return;
       } else {
-        System.out.println("Incorrect!");
+        Console.error("Incorrect!");
         turn++;
       }
     }
     // Only executed if the user has not guessed the movie after the maximum number of turns
-    System.out.println("You lose!");
+    Console.error("You lose! The movie was " + film.getTitle() + ".");
     scanner.close();
   }
 
@@ -62,14 +64,14 @@ public class CommandLineInterface implements UserInterface {
    * printing details.
    */
   public void printDetails() {
-    System.out.println("\nTurn " + turn + ":");
-    System.out.println("Release year: " + film.getYear());
+    Console.info("\nTurn " + turn + ":");
+    Console.log("Release year: " + film.getYear());
     // Please lmk if there's a better way to do this
-    if (turn > 1) System.out.println("Rating: " + film.getRated());
-    if (turn > 2) System.out.println("Runtime: " + film.getRuntime());
-    if (turn > 3) System.out.println("Genre(s): " + film.getGenre());
-    if (turn > 4) System.out.println("Director(s): " + film.getDirectors());
-    if (turn > 5) System.out.println("Cast: " + film.getCast());
-    System.out.println("\nName the movie: ");
+    if (turn > 1) Console.log("Rating: " + film.getRated());
+    if (turn > 2) Console.log("Runtime: " + film.getRuntime());
+    if (turn > 3) Console.log("Genre(s): " + film.getGenre());
+    if (turn > 4) Console.log("Director(s): " + film.getDirectors());
+    if (turn > 5) Console.log("Cast: " + film.getCast());
+    Console.log("\nName the movie: ");
   }
 }
