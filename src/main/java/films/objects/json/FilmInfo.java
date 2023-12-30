@@ -1,5 +1,8 @@
 package films.objects.json;
 
+import films.objects.IdGenerator;
+import films.services.GetFilmDetailsService;
+
 public class FilmInfo {
   private String title;
   private String year;
@@ -33,16 +36,72 @@ public class FilmInfo {
    */
   private void setFields(String[] information) {
     this.title = format(information[0]);
+    if (this.title.equals("N/A")) {
+      redo();
+      return;
+    }
+
     this.year = format(information[1]);
+    if (this.year.equals("N/A")) {
+      redo();
+      return;
+    }
+
     this.rated = format(information[2]);
+    if (this.rated.equals("N/A") || this.rated.contains("TV") || this.rated.contains("Approved")) {
+      redo();
+      return;
+    }
+
     this.released = format(information[3]);
+    if (this.released.equals("N/A")) {
+      redo();
+      return;
+    }
+
     this.runtime = format(information[4]);
+    if (this.runtime.equals("N/A")) {
+      redo();
+      return;
+    }
+
     this.genre = format(information[5]);
+    if (this.genre.equals("N/A")) {
+      redo();
+      return;
+    }
+
     this.directors = format(information[6]);
+    if (this.directors.equals("N/A")) {
+      redo();
+      return;
+    }
+
     this.writers = format(information[7]);
+    if (this.writers.equals("N/A")) {
+      redo();
+      return;
+    }
+
     this.cast = format(information[8]);
+    if (this.cast.equals("N/A")) {
+      redo();
+      return;
+    }
+
     // Not information to be provided to the user during the game, but when they get a result
     this.posterURL = format(information[13]);
+    if (this.posterURL.equals("N/A")) {
+      redo();
+      return;
+    }
+  }
+
+  /** If the film information is not available, redo the request to get a new film. */
+  private void redo() {
+    String json = new GetFilmDetailsService(IdGenerator.getRandomId()).send();
+    String[] information = json.split("\",\"");
+    setFields(information);
   }
 
   /**

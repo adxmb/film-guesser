@@ -2,7 +2,7 @@ package films.objects;
 
 public class IdGenerator {
   // Used to store the ids of the films in the database
-  private static String[] ids = new String[] {"tt0111161"};
+  // private static String[] ids = new String[] {"tt0111161"};
 
   /**
    * Method to retrieve a random id from the array of ids to be used as the id of a film.
@@ -10,6 +10,7 @@ public class IdGenerator {
    * @return a random id from the array of ids
    */
   public static String getRandomId() {
-    return ids[(int) (Math.random() * ids.length)];
+    return "tt0" + (int) (Math.random() * 1000000);
+    // return ids[(int) (Math.random() * ids.length)];
   }
 }
