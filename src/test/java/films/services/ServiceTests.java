@@ -21,4 +21,12 @@ public class ServiceTests {
     String actualJson = new GetTop100MoviesService().send();
     TestUtils.assertEqualsIgnoreWhitespace(expectedJson, actualJson);
   }
+
+  @Test
+  public void testGetTop1000MoviesService() {
+    Config.read();
+    String expectedCsv = TestUtils.readFile("services/expectedGetTop1000MoviesService.csv");
+    String actualCsv = new GetTop1000MoviesService().send();
+    TestUtils.assertEqualsIgnoreWhitespace(expectedCsv, actualCsv);
+  }
 }
