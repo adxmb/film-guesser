@@ -7,10 +7,18 @@ import org.junit.jupiter.api.Test;
 public class ServiceTests {
 
   @Test
-  public void testGetFilmDetailsService() {
+  public void testGetFilmDetailsByIdService() {
     Config.read();
-    String expectedJson = TestUtils.readFile("services/expectedGetFilmDetailsService.json");
-    String actualJson = new GetFilmDetailsService("tt0111161").send();
+    String expectedJson = TestUtils.readFile("services/expectedGetFilmDetailsByIdService.json");
+    String actualJson = new GetFilmDetailsByIdService("tt0111161").send();
+    TestUtils.assertEqualsIgnoreWhitespace(expectedJson, actualJson);
+  }
+
+  @Test
+  public void testGetFilmDetailsByNameService() {
+    Config.read();
+    String expectedJson = TestUtils.readFile("services/expectedGetFilmDetailsByNameService.json");
+    String actualJson = new GetFilmDetailsByNameService("The Shawshank Redemption").send();
     TestUtils.assertEqualsIgnoreWhitespace(expectedJson, actualJson);
   }
 

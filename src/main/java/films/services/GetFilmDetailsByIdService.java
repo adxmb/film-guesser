@@ -2,9 +2,9 @@ package films.services;
 
 import java.net.URI;
 
-public class GetFilmDetailsService extends Service {
+public class GetFilmDetailsByIdService extends Service {
 
-  public GetFilmDetailsService(String id) {
+  public GetFilmDetailsByIdService(String id) {
     URI uri = getBaseUrl().addParam("i", id).toUri();
     setRequest(getDefaultRequestBuilder().GET().uri(uri));
   }
