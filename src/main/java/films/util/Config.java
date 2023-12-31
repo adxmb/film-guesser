@@ -13,13 +13,13 @@ public class Config {
 
   public static void read() {
     try {
-      Console.log("Attempting to load config file at '" + CONFIG_LOCATION + "'...");
+      Console.log("\nAttempting to load config file at '" + CONFIG_LOCATION + "'...");
       InputStream inputStream = tryGetFile(CONFIG_LOCATION);
       tryLoadProperties(inputStream);
       tryCloseFile(inputStream);
       Console.success("Successfully loaded config file at '" + CONFIG_LOCATION + "'!");
     } catch (RuntimeException e) {
-      Console.error(e.getMessage());
+      Console.error(e.getMessage() + ". Quitting...");
       System.exit(0);
     }
   }
