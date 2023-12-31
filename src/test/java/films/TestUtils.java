@@ -1,4 +1,4 @@
-package films.services;
+package films;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

@@ -8,7 +8,6 @@ public class GetTop100MoviesService extends Service {
           "https://raw.githubusercontent.com/hjorturlarsen/IMDB-top-100/master/data/movies.json");
 
   public GetTop100MoviesService() {
-    System.out.println(getDefaultRequestBuilder());
     setRequest(getDefaultRequestBuilder().GET().uri(LOCATION));
   }
 }

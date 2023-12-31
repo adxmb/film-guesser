@@ -3,7 +3,6 @@ package films.ui.cli;
 import films.objects.json.FilmInfo;
 import films.ui.UserInterface;
 import films.util.Console;
-
 import java.util.Scanner;
 
 public class CommandLineInterface implements UserInterface {
@@ -24,7 +23,7 @@ public class CommandLineInterface implements UserInterface {
     this.film = new FilmInfo(json);
     this.turn = 1;
     this.scanner = new Scanner(System.in);
-    Console.info("Title match: " + film.getTitle().toLowerCase().replaceAll(REGEX, ""));
+    Console.log("\nGuess the movie!");
   }
 
   /**
