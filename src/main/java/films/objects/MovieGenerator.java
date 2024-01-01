@@ -1,6 +1,7 @@
 package films.objects;
 
 import films.services.GetTop1000MoviesService;
+import films.services.GetTop100MoviesService;
 import films.util.Console;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,10 +12,14 @@ import org.apache.commons.csv.CSVRecord;
 public class MovieGenerator {
   // Used to store the ids of the films in the database
   private static ArrayList<String> movieNames;
+  public static int filmCount;
 
   static {
     try {
-      String data = new GetTop1000MoviesService().send();
+      String data =
+          filmCount == 100
+              ? new GetTop100MoviesService().send()
+              : new GetTop1000MoviesService().send();
       parse(data);
     } catch (IOException e) {
       Console.error("Failed to read data from the internet. Quitting...");
