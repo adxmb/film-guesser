@@ -2,6 +2,7 @@ package films.objects;
 
 import films.services.GetTop1000MoviesService;
 import films.services.GetTop100MoviesService;
+import films.ui.cli.GameSelect;
 import films.util.Console;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,12 +13,11 @@ import org.apache.commons.csv.CSVRecord;
 public class MovieGenerator {
   // Used to store the ids of the films in the database
   private static ArrayList<String> movieNames;
-  public static int filmCount;
 
-  static {
+  public static void init(GameSelect.Difficulty difficulty) {
     try {
       String data =
-          filmCount == 100
+          difficulty == GameSelect.Difficulty.EASY
               ? new GetTop100MoviesService().send()
               : new GetTop1000MoviesService().send();
       parse(data);
