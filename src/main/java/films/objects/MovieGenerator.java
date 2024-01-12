@@ -129,9 +129,6 @@ public class MovieGenerator {
    * @throws RuntimeException if the method is called in hard mode
    */
   private static String getRandomId() {
-    if (State.get().difficulty == State.Difficulty.HARD) {
-      throw new RuntimeException("Use getRandomName() in hard mode");
-    }
     String id = movieIds.get((int) (Math.random() * movieIds.size()));
     return id;
   }
@@ -144,9 +141,6 @@ public class MovieGenerator {
    * @throws RuntimeException if the method is called in easy mode
    */
   private static String getRandomName() {
-    if (State.get().difficulty == State.Difficulty.EASY) {
-      throw new RuntimeException("Use getRandomId() in easy mode");
-    }
     String id = movieNames.get((int) (Math.random() * movieNames.size()));
     return id;
   }

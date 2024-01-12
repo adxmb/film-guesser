@@ -7,14 +7,16 @@ public class Game {
 
   private static final int MAX_TURNS = 6;
 
+  private State state;
   private UserInterface ui;
 
   /**
-   * Creates a new game with the given user interface.
+   * Creates a new game with state and the given user interface.
    *
    * @param ui the user interface to use for the game
    */
   public Game(UserInterface ui) {
+    this.state = new State();
     this.ui = ui;
   }
 
@@ -27,24 +29,24 @@ public class Game {
   public void start() {
     ui.start();
 
-    State.get().difficulty = ui.askDifficulty();
-    State.get().film = MovieGenerator.getRandomMovieDetails(State.get().difficulty);
+    state.difficulty = ui.askDifficulty();
+    state.film = MovieGenerator.getRandomMovieDetails(state.difficulty);
 
     ui.showIntroduction();
 
-    while (State.get().turn <= MAX_TURNS) {
-      ui.showFilmDetails(State.get().film, State.get().turn);
+    while (state.turn <= MAX_TURNS) {
+      ui.showFilmDetails(state.film, state.turn);
       if (getAndCheckGuess()) {
         ui.showWin();
         ui.close();
         return;
       } else {
         ui.showIncorrect();
-        State.get().turn++;
+        state.turn++;
       }
     }
     // Only executed if the user has not guessed the movie after the maximum number of turns
-    ui.showLose(State.get().film);
+    ui.showLose(state.film);
     ui.close();
   }
 
@@ -55,7 +57,7 @@ public class Game {
    */
   private boolean getAndCheckGuess() {
     String guess = formatForComparison(ui.askGuess());
-    String correctTitle = formatForComparison(State.get().film.getTitle());
+    String correctTitle = formatForComparison(state.film.getTitle());
     return guess.equals(correctTitle);
   }
 

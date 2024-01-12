@@ -9,29 +9,15 @@ public class State {
     HARD
   }
 
-  // Singleton
-  private static State instance;
+  // Package-private
+  Difficulty difficulty;
+  FilmInfo film;
+  int turn;
 
-  static {
-    reset();
-  }
-
-  public Difficulty difficulty;
-  public FilmInfo film;
-  public int turn;
-
-  private State() {
+  State() {
     // Default state
     difficulty = null;
     film = null;
     turn = 1;
-  }
-
-  public static void reset() {
-    instance = new State();
-  }
-
-  public static State get() {
-    return instance;
   }
 }
