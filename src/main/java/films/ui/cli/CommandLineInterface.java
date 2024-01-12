@@ -1,11 +1,16 @@
 package films.ui.cli;
 
+import java.util.Scanner;
+
 import films.State;
 import films.objects.json.FilmInfo;
 import films.ui.UserInterface;
 import films.util.Console;
 
 public class CommandLineInterface implements UserInterface {
+
+  private Scanner scanner = new Scanner(System.in);
+
   @Override
   public void start() {
     Console.log("\nWelcome to the Films game!");
@@ -32,14 +37,13 @@ public class CommandLineInterface implements UserInterface {
     if (turn > 3) Console.log("Genre(s): " + film.getGenre());
     if (turn > 4) Console.log("Director(s): " + film.getDirectors());
     if (turn > 5) Console.log("Cast: " + film.getCast());
-    Console.log("\nName the movie: ");
   }
 
   /** Requests user input for the movie's name. */
   @Override
   public String askGuess() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'askGuess'");
+    Console.log("\nName the movie: ");
+    return scanner.nextLine();
   }
 
   @Override

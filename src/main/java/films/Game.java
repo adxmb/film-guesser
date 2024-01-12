@@ -39,7 +39,7 @@ public class Game {
 
     while (State.get().turn <= MAX_TURNS) {
       ui.showFilmDetails(State.get().film, State.get().turn);
-      if (readGuess()) {
+      if (getAndCheckGuess()) {
         Console.success("Correct!");
         scanner.close();
         return;
@@ -58,9 +58,13 @@ public class Game {
    *
    * @return true if the user's guess is correct, false otherwise
    */
-  public boolean readGuess() {
-    String guess = scanner.nextLine().trim().toLowerCase().replaceAll(IGNORE_CHAR_REGEX, "");
-    String title = State.get().film.getTitle().toLowerCase().replaceAll(IGNORE_CHAR_REGEX, "");
-    return guess.equals(title);
+  private boolean getAndCheckGuess() {
+    String guess = formatForComparison(ui.askGuess());
+    String correctTitle = formatForComparison(State.get().film.getTitle());
+    return guess.equals(correctTitle);
+  }
+
+  private String formatForComparison(String input) {
+    return input.trim().toLowerCase().replaceAll(IGNORE_CHAR_REGEX, "");
   }
 }
