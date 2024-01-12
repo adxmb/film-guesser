@@ -33,12 +33,12 @@ public class Game {
     state.film = MovieGenerator.getRandomMovieDetails(state.difficulty);
 
     ui.showIntroduction();
+    System.out.println(state.film.getTitle()); // TODO: remove this line
 
     while (state.turn <= MAX_TURNS) {
       ui.showFilmDetails(state.film, state.turn);
       if (getAndCheckGuess()) {
         ui.showWin();
-        ui.close();
         return;
       } else {
         ui.showIncorrect();
@@ -47,7 +47,6 @@ public class Game {
     }
     // Only executed if the user has not guessed the movie after the maximum number of turns
     ui.showLose(state.film);
-    ui.close();
   }
 
   /**

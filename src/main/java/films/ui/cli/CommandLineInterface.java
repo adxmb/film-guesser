@@ -4,16 +4,18 @@ import films.State;
 import films.objects.json.FilmInfo;
 import films.ui.UserInterface;
 import films.util.Console;
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 /** See UserInterface for method descriptions. */
 public class CommandLineInterface implements UserInterface {
 
-  private Scanner scanner = new Scanner(System.in);
+  private static final BufferedReader READER = new BufferedReader(new InputStreamReader(System.in));
 
   @Override
   public void start() {
-    Console.log("\nWelcome to the Films game!");
+    Console.success("\nWelcome to the Films game!");
   }
 
   @Override
@@ -24,7 +26,7 @@ public class CommandLineInterface implements UserInterface {
       Console.log("\nChoose a difficulty: ");
       Console.log("1. Easy");
       Console.log("2. Hard");
-      String input = scanner.nextLine().strip().toLowerCase();
+      String input = readInputLine().strip().toLowerCase();
 
       switch (input) {
         case "1":
@@ -63,7 +65,7 @@ public class CommandLineInterface implements UserInterface {
   @Override
   public String askGuess() {
     Console.log("\nName the movie: ");
-    return scanner.nextLine();
+    return readInputLine();
   }
 
   @Override
@@ -83,6 +85,15 @@ public class CommandLineInterface implements UserInterface {
 
   @Override
   public void close() {
-    scanner.close();
+    // Currently unused for CLI.
+  }
+
+  private String readInputLine() {
+    try {
+      String line = READER.readLine();
+      return line;
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 }

@@ -4,6 +4,7 @@
 target/
 codestyle.config
 .env
+.vscode/
 
 ### Eclipse ###
 .metadata
