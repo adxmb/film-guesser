@@ -12,8 +12,6 @@ public class Game {
   private static final String IGNORE_CHAR_REGEX = "(\\s|-|'|\\.|!)";
 
   private UserInterface ui;
-  private FilmInfo film;
-  private int turn;
   private Scanner scanner;
 
   /**
@@ -35,12 +33,12 @@ public class Game {
   public void start() {
     ui.start();
     State.get().difficulty = ui.askDifficulty();
-    this.film = MovieGenerator.getRandomMovieDetails(State.get().difficulty);
+    State.get().film = MovieGenerator.getRandomMovieDetails(State.get().difficulty);
 
-    this.turn = 1;
+    State.get().turn = 1;
     Console.log("\nGuess the movie!");
 
-    while (turn <= MAX_TURNS) {
+    while (State.get().turn <= MAX_TURNS) {
       printDetails();
       if (readGuess()) {
         Console.success("Correct!");
@@ -48,11 +46,11 @@ public class Game {
         return;
       } else {
         Console.error("Incorrect!");
-        turn++;
+        State.get().turn++;
       }
     }
     // Only executed if the user has not guessed the movie after the maximum number of turns
-    Console.error("You lose! The movie was '" + film.getTitle() + "'.");
+    Console.error("You lose! The movie was '" + State.get().film.getTitle() + "'.");
     scanner.close();
   }
 
@@ -63,7 +61,7 @@ public class Game {
    */
   public boolean readGuess() {
     String guess = scanner.nextLine().trim().toLowerCase().replaceAll(IGNORE_CHAR_REGEX, "");
-    String title = film.getTitle().toLowerCase().replaceAll(IGNORE_CHAR_REGEX, "");
+    String title = State.get().film.getTitle().toLowerCase().replaceAll(IGNORE_CHAR_REGEX, "");
     return guess.equals(title);
   }
 
@@ -72,6 +70,9 @@ public class Game {
    * printing details.
    */
   public void printDetails() {
+    FilmInfo film = State.get().film;
+    int turn = State.get().turn;
+    
     Console.info("\nTurn " + turn + ":");
     Console.log("Release year: " + film.getYear());
     // Please lmk if there's a better way to do this
