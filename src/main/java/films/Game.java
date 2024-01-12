@@ -2,25 +2,20 @@ package films;
 
 import films.objects.MovieGenerator;
 import films.ui.UserInterface;
-import films.util.Console;
-import java.util.Scanner;
 
 public class Game {
 
   private static final int MAX_TURNS = 6;
-  private static final String IGNORE_CHAR_REGEX = "(\\s|-|'|\\.|!)";
 
   private UserInterface ui;
-  private Scanner scanner;
 
   /**
    * Creates a new game with the given user interface.
    *
-   * @param ui The user interface to use for the game.
+   * @param ui the user interface to use for the game
    */
   public Game(UserInterface ui) {
     this.ui = ui;
-    this.scanner = new Scanner(System.in);
   }
 
   /**
@@ -40,21 +35,21 @@ public class Game {
     while (State.get().turn <= MAX_TURNS) {
       ui.showFilmDetails(State.get().film, State.get().turn);
       if (getAndCheckGuess()) {
-        Console.success("Correct!");
-        scanner.close();
+        ui.showWin();
+        ui.close();
         return;
       } else {
-        Console.error("Incorrect!");
+        ui.showIncorrect();
         State.get().turn++;
       }
     }
     // Only executed if the user has not guessed the movie after the maximum number of turns
-    Console.error("You lose! The movie was '" + State.get().film.getTitle() + "'.");
-    scanner.close();
+    ui.showLose(State.get().film);
+    ui.close();
   }
 
   /**
-   * Reads the user's guess from the command line and compares it to the movie's title.
+   * Requests a guess from the user and compares it to the movie's title.
    *
    * @return true if the user's guess is correct, false otherwise
    */
@@ -64,7 +59,14 @@ public class Game {
     return guess.equals(correctTitle);
   }
 
+  /**
+   * Formats the given string for comparison by removing whitespace and punctuation and converting
+   * to lowercase.
+   *
+   * @param input the string to format.
+   * @return the formatted string.
+   */
   private String formatForComparison(String input) {
-    return input.trim().toLowerCase().replaceAll(IGNORE_CHAR_REGEX, "");
+    return input.trim().toLowerCase().replaceAll("(\\s|-|'|\\.|!)", "");
   }
 }

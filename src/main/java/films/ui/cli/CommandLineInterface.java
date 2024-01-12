@@ -1,11 +1,10 @@
 package films.ui.cli;
 
-import java.util.Scanner;
-
 import films.State;
 import films.objects.json.FilmInfo;
 import films.ui.UserInterface;
 import films.util.Console;
+import java.util.Scanner;
 
 public class CommandLineInterface implements UserInterface {
 
@@ -47,14 +46,22 @@ public class CommandLineInterface implements UserInterface {
   }
 
   @Override
+  public void showIncorrect() {
+    Console.error("Incorrect!");
+  }
+
+  @Override
   public void showWin() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'showWin'");
+    Console.success("Correct!");
   }
 
   @Override
   public void showLose(FilmInfo film) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'showLose'");
+    Console.error("You lose! The movie was '" + film.getTitle() + "'.");
+  }
+
+  @Override
+  public void close() {
+    scanner.close();
   }
 }

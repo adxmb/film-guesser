@@ -33,13 +33,20 @@ public interface UserInterface {
    */
   String askGuess();
 
-  /** Displays the win message. */
+  /** Displayed when the user inputs an incorrect guess. */
+  void showIncorrect();
+
+  /** Displayed when the user inputs a correct guess, winning the game. */
   void showWin();
 
   /**
-   * Displays the lose message, including the correct title of the movie.
+   * Displayed when the user runs out of turns, losing the game. Reveals the correct title of the
+   * movie.
    *
    * @param film The movie whose title is to be displayed.
    */
   void showLose(FilmInfo film);
+
+  /** Place for miscellaneous cleanup tasks. Should be called at the end of the game. */
+  void close();
 }
