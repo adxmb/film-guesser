@@ -1,6 +1,9 @@
 package films.objects;
 
 import films.State;
+import films.objects.json.FilmInfo;
+import films.services.GetFilmDetailsByIdService;
+import films.services.GetFilmDetailsByNameService;
 import films.services.GetTop1000MoviesService;
 import films.services.GetTop100MoviesService;
 import films.util.Console;
@@ -16,12 +19,33 @@ public class MovieGenerator {
   private static ArrayList<String> movieNames = new ArrayList<>(); // Hard mode
 
   /**
-   * Method to initialise the array of names/ids by reading the data from the internet and parsing
-   * it. Call after difficulty has been set. Ends the program if the data cannot be read.
+   * Method to retrieve json details for a random movie from the database based on the difficulty.
+   * 
+   * @param difficulty the difficulty of the game
+   * @return the json details of a random movie
    */
-  public static void init() {
+  public static FilmInfo getRandomMovieDetails(State.Difficulty difficulty) {
+    initialiseMovieList(difficulty);
+    String data;
+
+    if (difficulty == State.Difficulty.EASY) {
+      data = new GetFilmDetailsByIdService(getRandomId()).send();
+    } else if (difficulty == State.Difficulty.HARD) {
+      data = new GetFilmDetailsByNameService(getRandomName()).send();
+    } else {
+      throw new RuntimeException("Invalid difficulty");
+    }
+
+    return new FilmInfo(data);
+  }
+
+  /**
+   * Method to initialise the array of names/ids by reading the data from the internet and parsing
+   * it. Ends the program if the data cannot be read.
+   */
+  private static void initialiseMovieList(State.Difficulty difficulty) {
     try {
-      if (State.get().difficulty == State.Difficulty.EASY) {
+      if (difficulty == State.Difficulty.EASY) {
         String data = new GetTop100MoviesService().send();
         parseJson(data);
       } else {
@@ -89,12 +113,13 @@ public class MovieGenerator {
   }
 
   /**
-   * Method to retrieve a random id from the array of ids to be used as the id of a film.
+   * Method to retrieve a random id from the array of ids to be used as the id of a film. Use in
+   * EASY mode.
    *
    * @return a random id from the array of ids
    * @throws RuntimeException if the method is called in hard mode
    */
-  public static String getRandomId() {
+  private static String getRandomId() {
     if (State.get().difficulty == State.Difficulty.HARD) {
       throw new RuntimeException("Use getRandomName() in hard mode");
     }
@@ -103,12 +128,13 @@ public class MovieGenerator {
   }
 
   /**
-   * Method to retrieve a random id from the array of ids to be used as the id of a film.
+   * Method to retrieve a random id from the array of ids to be used as the id of a film. Use in
+   * HARD mode.
    *
    * @return a random id from the array of ids
    * @throws RuntimeException if the method is called in easy mode
    */
-  public static String getRandomName() {
+  private static String getRandomName() {
     if (State.get().difficulty == State.Difficulty.EASY) {
       throw new RuntimeException("Use getRandomId() in easy mode");
     }

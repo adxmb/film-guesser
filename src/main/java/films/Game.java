@@ -2,8 +2,6 @@ package films;
 
 import films.objects.MovieGenerator;
 import films.objects.json.FilmInfo;
-import films.services.GetFilmDetailsByIdService;
-import films.services.GetFilmDetailsByNameService;
 import films.ui.UserInterface;
 import films.util.Console;
 import java.util.Scanner;
@@ -25,6 +23,7 @@ public class Game {
    */
   public Game(UserInterface ui) {
     this.ui = ui;
+    this.scanner = new Scanner(System.in);
   }
 
   /**
@@ -35,20 +34,10 @@ public class Game {
    */
   public void start() {
     ui.start();
-
     State.get().difficulty = ui.askDifficulty();
-    MovieGenerator.init();
+    this.film = MovieGenerator.getRandomMovieDetails(State.get().difficulty);
 
-    String json;
-    if (State.get().difficulty == State.Difficulty.EASY) {
-      json = new GetFilmDetailsByIdService(MovieGenerator.getRandomId()).send();
-    } else {
-      json = new GetFilmDetailsByNameService(MovieGenerator.getRandomName()).send();
-    }
-
-    this.film = new FilmInfo(json);
     this.turn = 1;
-    this.scanner = new Scanner(System.in);
     Console.log("\nGuess the movie!");
 
     while (turn <= MAX_TURNS) {
