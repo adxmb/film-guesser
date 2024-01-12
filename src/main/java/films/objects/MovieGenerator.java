@@ -20,23 +20,32 @@ public class MovieGenerator {
 
   /**
    * Method to retrieve json details for a random movie from the database based on the difficulty.
-   * 
+   *
    * @param difficulty the difficulty of the game
    * @return the json details of a random movie
    */
   public static FilmInfo getRandomMovieDetails(State.Difficulty difficulty) {
     initialiseMovieList(difficulty);
-    String data;
+    FilmInfo film = null;
 
-    if (difficulty == State.Difficulty.EASY) {
-      data = new GetFilmDetailsByIdService(getRandomId()).send();
-    } else if (difficulty == State.Difficulty.HARD) {
-      data = new GetFilmDetailsByNameService(getRandomName()).send();
-    } else {
-      throw new RuntimeException("Invalid difficulty");
+    while (film == null) {
+      String data;
+      if (difficulty == State.Difficulty.EASY) {
+        data = new GetFilmDetailsByIdService(getRandomId()).send();
+      } else if (difficulty == State.Difficulty.HARD) {
+        data = new GetFilmDetailsByNameService(getRandomName()).send();
+      } else {
+        throw new RuntimeException("Invalid difficulty");
+      }
+
+      try {
+        film = new FilmInfo(data);
+      } catch (IllegalArgumentException e) {
+        Console.warn("Failed to parse film details. Trying again...");
+      }
     }
 
-    return new FilmInfo(data);
+    return film;
   }
 
   /**

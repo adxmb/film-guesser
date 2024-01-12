@@ -1,7 +1,6 @@
 package films;
 
 import films.objects.MovieGenerator;
-import films.objects.json.FilmInfo;
 import films.ui.UserInterface;
 import films.util.Console;
 import java.util.Scanner;
@@ -32,14 +31,14 @@ public class Game {
    */
   public void start() {
     ui.start();
+
     State.get().difficulty = ui.askDifficulty();
     State.get().film = MovieGenerator.getRandomMovieDetails(State.get().difficulty);
 
-    State.get().turn = 1;
-    Console.log("\nGuess the movie!");
+    ui.showIntroduction();
 
     while (State.get().turn <= MAX_TURNS) {
-      printDetails();
+      ui.showFilmDetails(State.get().film, State.get().turn);
       if (readGuess()) {
         Console.success("Correct!");
         scanner.close();
@@ -63,24 +62,5 @@ public class Game {
     String guess = scanner.nextLine().trim().toLowerCase().replaceAll(IGNORE_CHAR_REGEX, "");
     String title = State.get().film.getTitle().toLowerCase().replaceAll(IGNORE_CHAR_REGEX, "");
     return guess.equals(title);
-  }
-
-  /**
-   * Prints the information the player needs to know for the turn. Asks for the movie's name after
-   * printing details.
-   */
-  public void printDetails() {
-    FilmInfo film = State.get().film;
-    int turn = State.get().turn;
-    
-    Console.info("\nTurn " + turn + ":");
-    Console.log("Release year: " + film.getYear());
-    // Please lmk if there's a better way to do this
-    if (turn > 1) Console.log("Rating: " + film.getRated());
-    if (turn > 2) Console.log("Runtime: " + film.getRuntime());
-    if (turn > 3) Console.log("Genre(s): " + film.getGenre());
-    if (turn > 4) Console.log("Director(s): " + film.getDirectors());
-    if (turn > 5) Console.log("Cast: " + film.getCast());
-    Console.log("\nName the movie: ");
   }
 }

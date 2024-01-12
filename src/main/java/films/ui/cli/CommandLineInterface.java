@@ -18,16 +18,24 @@ public class CommandLineInterface implements UserInterface {
 
   @Override
   public void showIntroduction() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'showIntroduction'");
+    Console.log("\nGuess the movie!");
   }
 
+  /** Prints the information the player needs to know for the turn. */
   @Override
   public void showFilmDetails(FilmInfo film, int turn) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'showFilmDetails'");
+    Console.info("\nTurn " + turn + ":");
+    Console.log("Release year: " + film.getYear());
+    // Please lmk if there's a better way to do this
+    if (turn > 1) Console.log("Rating: " + film.getRated());
+    if (turn > 2) Console.log("Runtime: " + film.getRuntime());
+    if (turn > 3) Console.log("Genre(s): " + film.getGenre());
+    if (turn > 4) Console.log("Director(s): " + film.getDirectors());
+    if (turn > 5) Console.log("Cast: " + film.getCast());
+    Console.log("\nName the movie: ");
   }
 
+  /** Requests user input for the movie's name. */
   @Override
   public String askGuess() {
     // TODO Auto-generated method stub

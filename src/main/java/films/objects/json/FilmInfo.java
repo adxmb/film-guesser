@@ -1,8 +1,5 @@
 package films.objects.json;
 
-import films.objects.MovieGenerator;
-import films.services.GetFilmDetailsByNameService;
-
 public class FilmInfo {
   private String title;
   private String year;
@@ -23,7 +20,7 @@ public class FilmInfo {
    *
    * @param json The JSON string to extract the data from.
    */
-  public FilmInfo(String json) {
+  public FilmInfo(String json) throws IllegalArgumentException {
     // Note: This may need to be changed for film titles with weird syntaxs
     String[] information = json.split("\",\"");
     if (information.length < 14) {
