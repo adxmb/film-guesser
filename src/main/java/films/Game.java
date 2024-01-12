@@ -11,22 +11,34 @@ import java.util.Scanner;
 public class Game {
 
   private static final int MAX_TURNS = 6;
-  private static final String REGEX = "(\\s|-|'|\\.|!)";
+  private static final String IGNORE_CHAR_REGEX = "(\\s|-|'|\\.|!)";
 
+  private UserInterface ui;
   private FilmInfo film;
   private int turn;
   private Scanner scanner;
 
+  /**
+   * Creates a new game with the given user interface.
+   *
+   * @param ui The user interface to use for the game.
+   */
   public Game(UserInterface ui) {
-    ui.start();
+    this.ui = ui;
   }
 
   /**
-   * Starts the game. Prints the details of the movie and asks for the user's guess. If the user's
-   * guess is correct, the game ends. If the user's guess is incorrect, the game continues until the
-   * user has guessed the movie or the maximum number of turns has been reached.
+   * Starts the game, including the user interface. Prints the details of the movie and asks for the
+   * user's guess. If the user's guess is correct, the game ends. If the user's guess is incorrect,
+   * the game continues until the user has guessed the movie or the maximum number of turns has been
+   * reached.
    */
   public void start() {
+    ui.start();
+
+    State.get().difficulty = ui.askDifficulty();
+    MovieGenerator.init();
+
     String json;
     if (State.get().difficulty == State.Difficulty.EASY) {
       json = new GetFilmDetailsByIdService(MovieGenerator.getRandomId()).send();
@@ -61,8 +73,8 @@ public class Game {
    * @return true if the user's guess is correct, false otherwise
    */
   public boolean readGuess() {
-    String guess = scanner.nextLine().trim().toLowerCase().replaceAll(REGEX, "");
-    String title = film.getTitle().toLowerCase().replaceAll(REGEX, "");
+    String guess = scanner.nextLine().trim().toLowerCase().replaceAll(IGNORE_CHAR_REGEX, "");
+    String title = film.getTitle().toLowerCase().replaceAll(IGNORE_CHAR_REGEX, "");
     return guess.equals(title);
   }
 

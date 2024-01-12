@@ -1,20 +1,19 @@
 package films.ui.cli;
 
-import films.State.Difficulty;
+import films.State;
 import films.objects.json.FilmInfo;
 import films.ui.UserInterface;
+import films.util.Console;
 
 public class CommandLineInterface implements UserInterface {
   @Override
   public void start() {
-    new GameSelect().askDifficulty();
-    System.out.println("Welcome to the Films game!");
+    Console.log("\nWelcome to the Films game!");
   }
 
   @Override
-  public Difficulty askDifficulty() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'askDifficulty'");
+  public State.Difficulty askDifficulty() {
+    return new GameSelect().askDifficulty();
   }
 
   @Override
