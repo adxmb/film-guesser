@@ -2,6 +2,7 @@ package films;
 
 import films.objects.MovieGenerator;
 import films.ui.UserInterface;
+import films.util.Console;
 
 public class Game {
 
@@ -33,20 +34,29 @@ public class Game {
     state.film = MovieGenerator.getRandomMovieDetails(state.difficulty);
 
     ui.showIntroduction();
-    System.out.println(state.film.getTitle()); // TODO: remove this line
+    Console.info("[DEBUG] Answer: " + state.film.getTitle()); // TODO: remove this line
 
-    while (state.turn <= MAX_TURNS) {
-      ui.showFilmDetails(state.film, state.turn);
-      if (getAndCheckGuess()) {
-        ui.showWin();
-        return;
-      } else {
-        ui.showIncorrect();
-        state.turn++;
-      }
+    while (state.gameRunning) {
+      takeTurn();
     }
-    // Only executed if the user has not guessed the movie after the maximum number of turns
-    ui.showLose(state.film);
+
+    if (!ui.askRestart()) {
+      Main.stopApp();
+    }
+  }
+
+  private void takeTurn() {
+    ui.showFilmDetails(state.film, state.turn);
+    if (getAndCheckGuess()) {
+      ui.showWin();
+      state.gameRunning = false;
+    } else if (state.turn >= MAX_TURNS) {
+      ui.showLose(state.film);
+      state.gameRunning = false;
+    } else {
+      ui.showIncorrect();
+      state.turn++;
+    }
   }
 
   /**

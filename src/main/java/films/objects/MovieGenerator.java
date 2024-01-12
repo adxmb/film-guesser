@@ -1,5 +1,6 @@
 package films.objects;
 
+import films.Main;
 import films.State;
 import films.objects.json.FilmInfo;
 import films.services.GetFilmDetailsByIdService;
@@ -63,10 +64,10 @@ public class MovieGenerator {
       }
     } catch (IOException e) {
       Console.error("Failed to read data from the internet. Quitting...");
-      System.exit(0);
+      Main.stopApp();
     } catch (RuntimeException e) {
       Console.error("Failed to connect to the internet. Quitting...");
-      System.exit(0);
+      Main.stopApp();
     }
   }
 

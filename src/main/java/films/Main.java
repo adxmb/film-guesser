@@ -15,4 +15,8 @@ public class Main {
   public static void restartGame() {
     new Game(new CommandLineInterface()).start();
   }
+
+  public static void stopApp() {
+    System.exit(0);
+  }
 }

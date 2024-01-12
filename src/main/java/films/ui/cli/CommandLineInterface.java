@@ -84,8 +84,22 @@ public class CommandLineInterface implements UserInterface {
   }
 
   @Override
-  public void close() {
-    // Currently unused for CLI.
+  public boolean askRestart() {
+    while (true) {
+      Console.log("\nPlay again? (y/n)");
+      String input = readInputLine().strip().toLowerCase();
+
+      switch (input) {
+        case "y":
+        case "yes":
+          return true;
+        case "n":
+        case "no":
+          return false;
+        default:
+          Console.error("Invalid input.");
+      }
+    }
   }
 
   private String readInputLine() {

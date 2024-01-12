@@ -48,5 +48,5 @@ public interface UserInterface {
   void showLose(FilmInfo film);
 
   /** Place for miscellaneous cleanup tasks. Should be called at the end of the game. */
-  void close();
+  boolean askRestart();
 }
