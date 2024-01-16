@@ -7,6 +7,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
 
+import films.Main;
+
 public class Config {
 
   private static final Path CONFIG_LOCATION = Paths.get(".env").toAbsolutePath();
@@ -20,7 +22,7 @@ public class Config {
       Console.success("Successfully loaded config file at '" + CONFIG_LOCATION + "'!");
     } catch (RuntimeException e) {
       Console.error(e.getMessage() + ". Quitting...");
-      System.exit(0);
+      Main.stopApp();
     }
   }
 

@@ -1,78 +1,113 @@
 package films.ui.cli;
 
+import films.State;
 import films.objects.json.FilmInfo;
 import films.ui.UserInterface;
 import films.util.Console;
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
+/** See UserInterface for method descriptions. */
 public class CommandLineInterface implements UserInterface {
-  private static final int MAX_TURNS = 6;
-  private static final String REGEX = "(\\s|-|'|\\.|!)";
 
-  private FilmInfo film;
-  private int turn;
-  private Scanner scanner;
+  private static final BufferedReader READER = new BufferedReader(new InputStreamReader(System.in));
 
-  /**
-   * Creates a CommandLineInterface object from a JSON string. Creates a FilmInfo object from the
-   * JSON string. Sets the turn to 1 as the game has just started.
-   *
-   * @param json The JSON string to extract the data from.
-   */
-  public CommandLineInterface(String json) {
-    this.film = new FilmInfo(json);
-    this.turn = 1;
-    this.scanner = new Scanner(System.in);
+  @Override
+  public void start() {
+    Console.success("\nWelcome to the Films game!");
+  }
+
+  @Override
+  public State.Difficulty askDifficulty() {
+    State.Difficulty difficulty = null;
+
+    while (difficulty == null) {
+      Console.log("\nChoose a difficulty: ");
+      Console.log("1. Easy");
+      Console.log("2. Hard");
+      String input = readInputLine().strip().toLowerCase();
+
+      switch (input) {
+        case "1":
+        case "easy":
+          difficulty = State.Difficulty.EASY;
+          break;
+        case "2":
+        case "hard":
+          difficulty = State.Difficulty.HARD;
+          break;
+        default:
+          Console.error("Invalid difficulty. Please try again.");
+      }
+    }
+
+    return difficulty;
+  }
+
+  @Override
+  public void showIntroduction() {
     Console.log("\nGuess the movie!");
   }
 
-  /**
-   * Starts the game. Prints the details of the movie and asks for the user's guess. If the user's
-   * guess is correct, the game ends. If the user's guess is incorrect, the game continues until the
-   * user has guessed the movie or the maximum number of turns has been reached.
-   */
   @Override
-  public void start() {
-    while (turn <= MAX_TURNS) {
-      printDetails();
-      if (readGuess()) {
-        Console.success("Correct!");
-        scanner.close();
-        return;
-      } else {
-        Console.error("Incorrect!");
-        turn++;
-      }
-    }
-    // Only executed if the user has not guessed the movie after the maximum number of turns
-    Console.error("You lose! The movie was " + film.getTitle() + ".");
-    scanner.close();
-  }
-
-  /**
-   * Reads the user's guess from the command line and compares it to the movie's title.
-   *
-   * @return true if the user's guess is correct, false otherwise
-   */
-  public boolean readGuess() {
-    String guess = scanner.nextLine().trim().toLowerCase().replaceAll(REGEX, "");
-    String title = film.getTitle().toLowerCase().replaceAll(REGEX, "");
-    return guess.equals(title);
-  }
-
-  /**
-   * Prints the information the player needs to know for the turn. Asks for the movie's name after
-   * printing details.
-   */
-  public void printDetails() {
+  public void showFilmDetails(FilmInfo film, int turn) {
     Console.info("\nTurn " + turn + ":");
     Console.log("Release year: " + film.getYear());
-    // Please lmk if there's a better way to do this
+
     if (turn > 1) Console.log("Rating: " + film.getRated());
     if (turn > 2) Console.log("Runtime: " + film.getRuntime());
     if (turn > 3) Console.log("Genre(s): " + film.getGenre());
     if (turn > 4) Console.log("Director(s): " + film.getDirectors());
     if (turn > 5) Console.log("Cast: " + film.getCast());
+  }
+
+  @Override
+  public String askGuess() {
     Console.log("\nName the movie: ");
+    return readInputLine();
+  }
+
+  @Override
+  public void showIncorrect() {
+    Console.error("Incorrect!");
+  }
+
+  @Override
+  public void showWin() {
+    Console.success("Correct!");
+  }
+
+  @Override
+  public void showLose(FilmInfo film) {
+    Console.error("You lose! The movie was '" + film.getTitle() + "'.");
+  }
+
+  @Override
+  public boolean askRestart() {
+    while (true) {
+      Console.log("\nPlay again? (y/n)");
+      String input = readInputLine().strip().toLowerCase();
+
+      switch (input) {
+        case "y":
+        case "yes":
+          return true;
+        case "n":
+        case "no":
+          return false;
+        default:
+          Console.error("Invalid input.");
+      }
+    }
+  }
+
+  private String readInputLine() {
+    try {
+      String line = READER.readLine();
+      return line;
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 }

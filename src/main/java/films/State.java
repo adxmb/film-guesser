@@ -1,5 +1,7 @@
 package films;
 
+import films.objects.json.FilmInfo;
+
 public class State {
 
   public enum Difficulty {
@@ -7,24 +9,17 @@ public class State {
     HARD
   }
 
-  // Singleton
-  private static State instance;
+  // Package-private
+  Difficulty difficulty;
+  FilmInfo film;
+  int turn;
+  boolean gameRunning;
 
-  static {
-    reset();
-  }
-
-  public Difficulty difficulty;
-
-  private State() {
+  State() {
     // Default state
-  }
-
-  public static void reset() {
-    instance = new State();
-  }
-
-  public static State get() {
-    return instance;
+    difficulty = null;
+    film = null;
+    turn = 1;
+    gameRunning = true;
   }
 }
